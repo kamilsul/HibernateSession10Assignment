@@ -17,7 +17,6 @@ public class App {
 		Configuration conf = new Configuration().configure().addAnnotatedClass(Author.class)
 				.addAnnotatedClass(Question.class);
 		SessionFactory sf = conf.buildSessionFactory();
-		Session session = sf.openSession();
 
 		// Uncomment this to generate the data in the
 		// database. Change connection details in the cfg file to your local db details.
@@ -40,7 +39,9 @@ public class App {
 				}
 				if (reminder == 0) {
 					int numberOfQuestionsInEachSection = totalMark / 10;
+					Session session = sf.openSession();
 					generateExamQuestions(session, numberOfQuestionsInEachSection);
+					session.close();
 				}
 			} catch (NumberFormatException e) {
 				if (input.contains("quit")) {
@@ -55,7 +56,6 @@ public class App {
 		scanner.close();
 		// comment end
 
-		session.close();
 		System.exit(0);
 		;
 	}
